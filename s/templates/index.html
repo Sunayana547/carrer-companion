@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌱 AgriGenius AI - Smart Crop Yield Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    :root {
+      --primary-color: #2e7d32;
+      --secondary-color: #4caf50;
+      --accent-color: #ffc107;
+      --light-bg: #f5f9f5;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --success-light: #e8f5e9;
+      --warning-light: #fff8e1;
+      --info-light: #e3f2fd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f7f0 0%, #e0f2e9 100%);
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #2d3436;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 4rem !important;
+      margin-bottom: 2rem !important;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+      padding: 0.8rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.7rem;
+      background: linear-gradient(135deg, var(--primary-color), #4caf50);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(46, 125, 50, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      font-weight: 600;
+      border-bottom: none;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .card-header i {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .btn {
+      border: none;
+      padding: 0.7rem 1.8rem;
+      font-weight: 500;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(27, 94, 32, 0.4);
+    }
+
+    .btn-outline-success {
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      background: transparent;
+    }
+
+    .btn-outline-success:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+      background-color: #fff;
+      font-size: 0.95rem;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.15);
+      background-color: #fff;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #2d3436;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(27, 94, 32, 0.15);
+      background-color: white;
+    }
+
+    .input-group-text {
+      background: linear-gradient(135deg, #f0f7f0, #e0f2e9);
+      border: 1px solid #e0e0e0;
+      color: var(--primary-color);
+      border-radius: 10px 0 0 10px;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      min-width: 45px;
+      justify-content: center;
+      border-right: none;
+    }
+
+    .result-box {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 240, 0.8) 100%);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      height: 100%;
+      border: 1px solid rgba(46, 125, 50, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .result-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .result-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      transition: var(--transition);
+    }
+
+    .result-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .result-box:hover::before {
+      width: 6px;
+    }
+
+    .result-value {
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0.5rem 0;
+      position: relative;
+      display: inline-block;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: -0.5px;
+    }
+
+    .result-value::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+
+    .result-label {
+      font-size: 0.95rem;
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .input-group-text {
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+    }
+
+    .loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .loading:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      margin: -12px 0 0 -12px;
+      border: 3px solid rgba(27, 94, 32, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .toast {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      z-index: 1100;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      border: none;
+    }
+
+    .toast-header {
+      padding: 0.75rem 1.25rem;
+      border-bottom: none;
+    }
+
+    .toast-body {
+      padding: 1.25rem;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      font-size: 1.25rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(27, 94, 32, 0.1);
+      color: var(--primary-color);
+      transition: var(--transition);
+      border: none;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(27, 94, 32, 0.2);
+      transform: rotate(30deg);
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-bs-theme="dark"] {
+      --primary-color: #4caf50;
+      --secondary-color: #81c784;
+      --light-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --input-bg: #2d2d2d;
+      --input-border: #3d3d3d;
+    }
+
+    [data-bs-theme="dark"] body {
+      background: linear-gradient(135deg, #0a0e0f 0%, #1a1a1a 100%);
+      color: var(--text-color);
+    }
+
+    [data-bs-theme="dark"] .card {
+      background: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    [data-bs-theme="dark"] .result-box {
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(45, 45, 45, 0.6) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    [data-bs-theme="dark"] .form-control,
+    [data-bs-theme="dark"] .form-select {
+      background-color: rgba(45, 45, 45, 0.8);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #f0f0f0;
+    }
+
+    [data-bs-theme="dark"] .input-group-text {
+      background: rgba(45, 45, 45, 0.8);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #aaa;
+    }
+
+    [data-bs-theme="dark"] .theme-toggle {
+      background: rgba(76, 175, 80, 0.15);
+      color: var(--primary-color);
+    }
+
+    [data-bs-theme="dark"] .theme-toggle:hover {
+      background: rgba(76, 175, 80, 0.25);
+    }
+
+    [data-bs-theme="dark"] .card {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    [data-bs-theme="dark"] .form-control,
+    [data-bs-theme="dark"] .form-select {
+      background-color: var(--input-bg);
+      border-color: var(--input-border);
+      color: var(--text-color);
+    }
+
+    [data-bs-theme="dark"] .input-group-text {
+      background-color: #3d3d3d;
+      border-color: #4d4d4d;
+      color: #b0b0b0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .result-box {
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 1rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.4rem;
+      }
+
+      .card {
+        border-radius: 14px;
+      }
+
+      .btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+      }
+
+      .form-control,
+      .form-select {
+        padding: 0.65rem 0.9rem;
+      }
+
+      .result-value {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary-color);
+    }
+
+    /* Animation Classes */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Pulse Animation */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-seedling"></i> AgriGenius AI
+      </a>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-success me-2" id="themeToggle" aria-label="Toggle theme">
+          <i class="bi bi-moon-fill"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="container py-4" style="padding-bottom: 4rem !important;">
+    <div class="text-center mb-5 py-4" data-aos="fade-up">
+      <h1 class="display-5 fw-bold mb-3 gradient-text">🌾 Smart Crop Yield Prediction</h1>
+      <p class="lead text-muted mb-4">Harness the power of AI to predict crop yields with precision and optimize your
+        farming strategies</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#prediction-section" class="btn btn-primary btn-lg px-4">
+          <i class="fas fa-chart-line me-2"></i> Get Started
+        </a>
+        <a href="#how-it-works" class="btn btn-outline-primary btn-lg px-4">
+          <i class="fas fa-info-circle me-2"></i> Learn More
+        </a>
+      </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div id="how-it-works" class="row mb-5 py-4" data-aos="fade-up">
+      <div class="col-12 text-center mb-4">
+        <h2 class="fw-bold mb-4">How It Works</h2>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="icon-box mb-3">
+              <i class="fas fa-cloud-sun fa-3x text-primary mb-3"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Input Your Data</h5>
+            <p class="card-text text-muted">Enter your location, weather conditions, and soil parameters to get started
+              with accurate predictions.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="icon-box mb-3">
+              <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">AI Analysis</h5>
+            <p class="card-text text-muted">Our advanced AI model processes your data to predict crop yields with high
+              accuracy.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="icon-box mb-3">
+              <i class="fas fa-chart-pie fa-3x text-primary mb-3"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Get Insights</h5>
+            <p class="card-text text-muted">Receive detailed reports and visualizations to make informed farming
+              decisions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Prediction Section -->
+    <div id="prediction-section" class="row g-4" data-aos="fade-up">
+      <!-- Left Column: Inputs -->
+      <div class="col-lg-4">
+        <!-- Location & Weather Card -->
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <i class="fas fa-map-marker-alt me-2"></i> Location & Weather
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                <input type="text" class="form-control" id="city" placeholder="Enter city name" value="Visakhapatnam">
+              </div>
+            </div>
+
+            <!-- Crop Name Input with Combo Box -->
+            <div class="mb-3">
+              <label for="cropNameInput" class="form-label">Crop Name</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-plant"></i></span>
+                <input type="text" class="form-control" id="cropNameInput" list="cropSuggestions"
+                  placeholder="Type or select a crop..." autocomplete="off" onfocus="this.select()"
+                  onkeydown="return event.key !== 'Tab';">
+                <div id="cropSuggestions" class="dropdown-menu w-100"
+                  style="display: none; max-height: 300px; overflow-y: auto;">
+                  <!-- Cereals -->
+                  <a class="dropdown-item" href="#" data-value="Wheat">Wheat (10-25°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Rice">Rice (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Maize">Maize (15-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Soybean">Soybean (15-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Chickpea">Chickpea (10-30°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Lentil">Lentil (10-30°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Tomato">Tomato (18-30°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Potato">Potato (15-25°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Onion">Onion (12-30°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Brinjal">Brinjal (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Sugarcane">Sugarcane (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Cotton">Cotton (21-40°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Mango">Mango (24-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Banana">Banana (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Chilli">Chilli (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Turmeric">Turmeric (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Mustard">Mustard (10-25°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Groundnut">Groundnut (20-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Coconut">Coconut (25-35°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Tea">Tea (15-30°C)</a>
+                  <a class="dropdown-item" href="#" data-value="Coffee">Coffee (15-28°C)</a>
+                </div>
+              </div>
+              <div class="form-text text-muted small">Type to search or select from the dropdown</div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="temp" class="form-label">Temperature (°C) <small
+                      class="text-muted crop-temp-range"></small></label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-thermometer-half"></i></span>
+                    <input type="number" class="form-control" id="temp" value="28" step="0.1">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="rain" class="form-label">Rainfall (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-cloud-rain"></i></span>
+                    <input type="number" class="form-control" id="rain" value="50" step="0.1">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button id="btnWeather" class="btn btn-outline-success w-100 mt-3">
+              <i class="bi bi-cloud-sun me-2"></i>Get Weather Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Soil Inputs Card -->
+        <div class="card shadow-sm mt-4">
+          <div class="card-header">
+            <i class="fas fa-seedling me-2"></i> Soil & Fertilizer
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="fertilizer" class="form-label">Fertilizer (kg/acre)</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-bucket"></i></span>
+                <input type="number" class="form-control" id="fertilizer" value="50">
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nitrogen" class="form-label">Nitrogen (N)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">N</span>
+                    <input type="number" class="form-control" id="nitrogen" value="50">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="phosphorus" class="form-label">Phosphorus (P)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">P</span>
+                    <input type="number" class="form-control" id="phosphorus" value="30">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="potassium" class="form-label">Potassium (K)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">K</span>
+                    <input type="number" class="form-control" id="potassium" value="20">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button id="btnPredict" class="btn btn-success w-100 mt-3">
+              <i class="bi bi-lightning-charge me-2"></i>Predict Yield
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Results -->
+      <div class="col-lg-8">
+        <!-- Prediction Results Card -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-header">
+            <i class="fas fa-tachometer-alt me-2"></i> Yield Prediction
+          </div>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-md-4 mb-3">
+                <div class="result-box">
+                  <div class="result-value" id="pred">—</div>
+                  <div class="result-label">Predicted Yield</div>
+                  <small class="text-muted">(Q/acre)</small>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="result-box">
+                  <div class="result-value" id="std">—</div>
+                  <div class="result-label">Confidence</div>
+                  <small class="text-muted">(Standard Deviation)</small>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="result-box">
+                  <div class="result-value" id="avg">—</div>
+                  <div class="result-label">Dataset Average</div>
+                  <small class="text-muted">(Q/acre)</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress mt-3" style="height: 10px;">
+              <div id="yieldProgress" class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                role="progressbar" style="width: 0%"></div>
+            </div>
+            <div class="text-center mt-2 text-muted small" id="yieldStatus">
+              Enter your data and click 'Predict Yield' to see results
+            </div>
+          </div>
+        </div>
+
+        <!-- What-If Simulator Card -->
+        <div class="card shadow-sm" style="margin-bottom: 0;">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fas fa-chart-line me-2"></i> What-If Analysis
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip"
+              data-bs-placement="left" title="Adjust the slider to see how different values affect yield prediction">
+              <i class="fas fa-info"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-5">
+                <div class="mb-3">
+                  <label for="simFeature" class="form-label fw-medium text-muted mb-2">
+                    <i class="bi bi-sliders me-1"></i> Adjust Parameter
+                  </label>
+                  <select id="simFeature" class="form-select form-select-sm">
+                    <option value="rain">🌧️ Rainfall (mm)</option>
+                    <option value="fertilizer">🌱 Fertilizer (kg/acre)</option>
+                    <option value="temp">🌡️ Temperature (°C)</option>
+                    <option value="nitrogen">🧪 Nitrogen (kg/ha)</option>
+                    <option value="phosphorus">🧪 Phosphorus (kg/ha)</option>
+                    <option value="potassium">🧪 Potassium (kg/ha)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label for="simValue" class="form-label fw-medium text-muted mb-0">
+                      <i class="bi bi-arrow-left-right me-1"></i> Value Range
+                    </label>
+                    <span class="badge bg-success bg-opacity-10 text-success">
+                      Current: <span id="simCurrent" class="fw-bold">0</span>
+                    </span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-muted small me-2" id="simMin">0</span>
+                    <input type="range" class="form-range flex-grow-1" id="simValue" min="0" max="100" step="1">
+                    <span class="text-muted small ms-2" id="simMax">100</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-container" style="position: relative; height: 280px; margin-top: 1rem;">
+              <div id="simChart" style="height: 100%;">
+                <div class="text-center py-5 text-muted">
+                  <i class="bi bi-graph-up-arrow" style="font-size: 2.5rem; opacity: 0.7;"></i>
+                  <p class="mt-2 mb-1 fw-medium">Adjust the slider to see yield predictions</p>
+                  <small class="text-muted">The chart will update as you move the slider</small>
+                </div>
+              </div>
+              <div class="chart-legend text-center mt-2 small text-muted">
+                <span class="me-3"><i class="bi bi-circle-fill text-success me-1"></i> Predicted Yield </span>
+                <span><i class="bi bi-circle-fill text-warning me-1"></i> Current Selection</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more bottom padding to ensure content isn't cut off -->
+  <div style="height: 50px;"></div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto">Notification</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body"></div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="btn btn-primary btn-lg back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false
+    });
+
+    // Back to top button
+    const backToTopButton = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
+      }
+    });
+
+    backToTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl, {
+        trigger: 'hover',
+        placement: 'top',
+        animation: true,
+        delay: { show: 300, hide: 100 }
+      });
+    });
+
+    // Add animation to cards on scroll
+    const animateOnScroll = () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const cardPosition = card.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+
+        if (cardPosition < screenPosition) {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }
+      });
+    };
+
+    // Initial check
+    window.addEventListener('load', animateOnScroll);
+    window.addEventListener('scroll', animateOnScroll);
+
+    // Initialize toast
+    const toastEl = document.getElementById('toast');
+    const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 3000 });
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      const toastBody = toastEl.querySelector('.toast-body');
+      const toastHeader = toastEl.querySelector('.toast-header');
+      const toastIcon = document.createElement('i');
+
+      // Reset classes and content
+      toastEl.className = 'toast fade-in';
+      toastHeader.className = 'toast-header d-flex align-items-center';
+
+      // Set icon based on type
+      let iconClass = 'info-circle';
+      if (type === 'success') {
+        iconClass = 'check-circle';
+        toastHeader.classList.add('bg-success', 'text-white');
+      } else if (type === 'error') {
+        iconClass = 'exclamation-circle';
+        toastHeader.classList.add('bg-danger', 'text-white');
+      } else if (type === 'warning') {
+        iconClass = 'exclamation-triangle';
+        toastHeader.classList.add('bg-warning');
+      } else {
+        toastHeader.classList.add('bg-primary', 'text-white');
+      }
+
+      // Set header content
+      const title = document.createElement('strong');
+      title.className = 'me-auto';
+      title.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+
+      // Clear previous content and add new
+      toastHeader.innerHTML = '';
+      toastHeader.appendChild(document.createElement('i')).className = `fas fa-${iconClass} me-2`;
+      toastHeader.appendChild(title);
+
+      // Add close button
+      const closeButton = document.createElement('button');
+      closeButton.type = 'button';
+      closeButton.className = 'btn-close btn-close-white';
+      closeButton.setAttribute('data-bs-dismiss', 'toast');
+      closeButton.setAttribute('aria-label', 'Close');
+      toastHeader.appendChild(closeButton);
+
+      // Set body content
+      toastBody.innerHTML = '';
+      toastBody.textContent = message;
+
+      // Show toast with animation
+      toast.show();
+
+      // Add pulse animation to the toast
+      toastEl.classList.add('animate__animated', 'animate__fadeInRight');
+    }
+
+    // Theme Toggle with Smooth Transition
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or use system preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    let currentTheme = localStorage.getItem('theme') ||
+      (prefersDarkScheme.matches ? 'dark' : 'light');
+
+    // Apply the saved theme with transition
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const isDark = theme === 'dark';
+
+      // Add transition class
+      document.body.classList.add('theme-transition');
+
+      // Set theme
+      root.setAttribute('data-bs-theme', theme);
+      themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+
+      // Update local storage
+      localStorage.setItem('theme', theme);
+
+      // Remove transition class after animation
+      setTimeout(() => {
+        document.body.classList.remove('theme-transition');
+      }, 500);
+    }
+
+    // Initialize theme
+    applyTheme(currentTheme);
+
+    // Toggle theme with animation
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+
+    // Watch for system theme changes
+    prefersDarkScheme.addListener(e => {
+      if (!localStorage.getItem('theme')) {  // Only if user hasn't set a preference
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // Weather API with Enhanced UI
+    async function getWeather() {
+      const cityInput = document.getElementById('city');
+      const city = cityInput.value.trim() || 'Visakhapatnam';
+      const btn = document.getElementById('btnWeather');
+      const tempInput = document.getElementById('temp');
+      const rainInput = document.getElementById('rain');
+      const originalBtnText = btn.innerHTML;
+
+      // Validate city input
+      if (!city) {
+        showToast('Please enter a city name', 'error');
+        cityInput.focus();
+        return;
+      }
+
+      // Show loading state with animation
+      btn.disabled = true;
+      btn.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        <span class="loading-text">Fetching Weather...</span>
+      `;
+
+      // Add pulse animation to weather card
+      const weatherCard = btn.closest('.card');
+      weatherCard.classList.add('pulse');
+
+      try {
+        const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch weather data');
+        }
+
+        // Show success animation
+        btn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Fetched!';
+        setTimeout(() => {
+          btn.innerHTML = originalBtnText;
+          btn.disabled = false;
+        }, 1500);
+
+        // Show success toast with weather info
+        const weatherDescription = data.description ? ` with ${data.description}` : '';
+        showToast(`Weather data for ${data.city}${weatherDescription} updated successfully`, 'success');
+
+        // Update UI with weather data
+        if (data.temp !== null) {
+          tempInput.value = data.temp;
+          // Add visual feedback for temperature
+          const tempValue = parseFloat(data.temp);
+          if (tempValue > 30) {
+            tempInput.classList.add('is-valid', 'temperature-hot');
+            tempInput.classList.remove('temperature-cold');
+          } else if (tempValue < 15) {
+            tempInput.classList.add('is-valid', 'temperature-cold');
+            tempInput.classList.remove('temperature-hot');
+          } else {
+            tempInput.classList.add('is-valid');
+            tempInput.classList.remove('temperature-hot', 'temperature-cold');
+          }
+        }
+
+        if (data.rain !== null) {
+          rainInput.value = data.rain;
+          // Add visual feedback for rain
+          rainInput.classList.add('is-valid');
+          if (data.rain > 10) {
+            rainInput.classList.add('rain-high');
+          } else {
+            rainInput.classList.remove('rain-high');
+          }
+        }
+
+        // Add weather icon based on conditions
+        updateWeatherIcon(data);
+
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+
+        // Show error state
+        btn.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Error';
+        btn.classList.add('btn-danger');
+
+        // Show error toast
+        showToast(error.message || 'Failed to fetch weather data', 'error');
+
+        // Reset button after delay
+        setTimeout(() => {
+          btn.innerHTML = originalBtnText;
+          btn.classList.remove('btn-danger');
+          btn.disabled = false;
+        }, 2000);
+      } finally {
+        // Remove pulse animation
+        weatherCard.classList.remove('pulse');
+      }
+
+      // Helper function to update weather icon based on conditions
+      function updateWeatherIcon(weatherData) {
+        const weatherIcon = document.getElementById('weatherIcon');
+        if (!weatherIcon) return;
+
+        // Default icon
+        let iconClass = 'fa-cloud-sun';
+
+        // Determine icon based on weather conditions
+        if (weatherData.rain > 5) {
+          iconClass = 'fa-cloud-rain';
+        } else if (weatherData.temp > 30) {
+          iconClass = 'fa-sun';
+        } else if (weatherData.temp < 10) {
+          iconClass = 'fa-snowflake';
+        }
+
+        // Update icon with animation
+        weatherIcon.classList.remove('fa-cloud-sun', 'fa-cloud-rain', 'fa-sun', 'fa-snowflake');
+        weatherIcon.classList.add(iconClass, 'animate__animated', 'animate__pulse');
+
+        // Remove animation class after it completes
+        setTimeout(() => {
+          weatherIcon.classList.remove('animate__animated', 'animate__pulse');
+        }, 1000);
+      }
+    }
+
+    // Prediction
+    let chart = null;
+
+    async function predict() {
+      const btn = document.getElementById('btnPredict');
+      if (!btn) {
+        console.error('Predict button not found');
+        return;
+      }
+      const originalBtnText = btn.innerHTML;
+
+      // Get crop input safely
+      const cropInput = document.getElementById('cropNameInput');
+      if (!cropInput) {
+        showToast('Crop input not found', 'error');
+        return;
+      }
+
+      // Show loading state
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Predicting...';
+
+      try {
+        const cropName = cropInput.value.trim();
+        const payload = {
+          city: document.getElementById('city').value.trim() || 'Visakhapatnam',
+          crop: cropName,
+          temp: parseFloat(document.getElementById('temp').value) || 0,
+          rain: parseFloat(document.getElementById('rain').value) || 0,
+          fertilizer: parseInt(document.getElementById('fertilizer').value) || 0,
+          nitrogen: parseInt(document.getElementById('nitrogen').value) || 0,
+          phosphorus: parseInt(document.getElementById('phosphorus').value) || 0,
+          potassium: parseInt(document.getElementById('potassium').value) || 0,
+        };
+
+        // Validate inputs
+        if (isNaN(payload.temp) || isNaN(payload.rain) || isNaN(payload.fertilizer) ||
+          isNaN(payload.nitrogen) || isNaN(payload.phosphorus) || isNaN(payload.potassium)) {
+          throw new Error('Please enter valid numbers for all fields');
+        }
+
+        const response = await fetch('/api/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Failed to get prediction');
+        }
+
+        const result = await response.json();
+
+        // Update UI with results
+        document.getElementById('pred').textContent = result.yield?.toFixed(2) || '—';
+        document.getElementById('std').textContent = result.std ? `± ${result.std.toFixed(2)}` : '—';
+        document.getElementById('avg').textContent = result.avg_yield?.toFixed(2) || '—';
+
+        // Update progress bar
+        const progress = Math.min(100, Math.max(0, (result.yield / (result.avg_yield * 1.5)) * 100));
+        const progressBar = document.getElementById('yieldProgress');
+        progressBar.style.width = `${progress}%`;
+
+        // Update status text
+        const statusEl = document.getElementById('yieldStatus');
+        if (result.yield > result.avg_yield * 1.2) {
+          statusEl.innerHTML = '<i class="bi bi-arrow-up-circle-fill text-success me-1"></i> Above average yield expected';
+          progressBar.className = 'progress-bar bg-success progress-bar-striped progress-bar-animated';
+        } else if (result.yield < result.avg_yield * 0.8) {
+          statusEl.innerHTML = '<i class="bi bi-arrow-down-circle-fill text-warning me-1"></i> Below average yield expected';
+          progressBar.className = 'progress-bar bg-warning progress-bar-striped progress-bar-animated';
+        } else {
+          statusEl.innerHTML = '<i class="bi bi-dash-circle-fill text-info me-1"></i> Average yield expected';
+          progressBar.className = 'progress-bar bg-info progress-bar-striped progress-bar-animated';
+        }
+
+        // Update recommendations
+        updateRecommendations(payload, result);
+
+        // Update what-if analysis
+        updateWhatIfAnalysis(payload, result);
+
+        showToast('Yield prediction completed successfully', 'success');
+      } catch (error) {
+        console.error('Prediction error:', error);
+        showToast(error.message || 'Failed to get prediction', 'error');
+      } finally {
+        // Reset button state
+        btn.disabled = false;
+        btn.innerHTML = originalBtnText;
+      }
+    }
+
+    // Update recommendations based on prediction results
+    function updateRecommendations(inputs, result) {
+      const recommendationsEl = document.getElementById('recommendations');
+
+      // Skip if recommendations element doesn't exist
+      if (!recommendationsEl) return;
+
+      let recommendations = [];
+
+      // Temperature recommendations
+      if (inputs.temp < 15) {
+        recommendations.push('Consider planting cold-resistant crop varieties');
+      } else if (inputs.temp > 35) {
+        recommendations.push('High temperatures detected. Ensure proper irrigation.');
+      }
+
+      // Rainfall recommendations - dynamically update based on current value
+      const rainValue = parseFloat(document.getElementById('rain').value) || 0;
+      if (rainValue < 20) {
+        recommendations.push('Low rainfall detected. Consider irrigation options.');
+      } else if (rainValue > 150) {
+        recommendations.push('High rainfall expected. Ensure proper drainage.');
+      }
+
+      // Nutrient balance recommendations
+      const totalNPK = inputs.nitrogen + inputs.phosphorus + inputs.potassium;
+      if (totalNPK < 100) {
+        recommendations.push('Consider adding more nutrients to improve soil fertility');
+      }
+
+      // If no specific recommendations, show a general one
+      if (recommendations.length === 0) {
+        recommendations.push('Your current conditions look good for most crops');
+      }
+
+      // Update the UI if element exists
+      recommendationsEl.innerHTML = recommendations
+        .map(rec => `<p class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>${rec}</p>`)
+        .join('');
+    }
+
+    // Update what-if analysis
+    function updateWhatIfAnalysis(baseInputs, baseResult) {
+      const simFeature = document.getElementById('simFeature');
+      const simValue = document.getElementById('simValue');
+      const simCurrent = document.getElementById('simCurrent');
+      const simMin = document.getElementById('simMin');
+      const simMax = document.getElementById('simMax');
+
+      // Set up the slider based on the selected feature
+      function updateSlider() {
+        const feature = simFeature.value;
+        let min, max, step, value;
+
+        switch (feature) {
+          case 'temp':
+            min = 0;
+            max = 50;
+            step = 1;
+            value = baseInputs.temp || 25;
+            break;
+          case 'rain':
+            min = 0;
+            max = 300;
+            step = 5;
+            value = baseInputs.rain || 50;
+            break;
+          case 'fertilizer':
+            min = 0;
+            max = 200;
+            step = 5;
+            value = baseInputs.fertilizer || 50;
+            break;
+          default: // N, P, K
+            min = 0;
+            max = 200;
+            step = 5;
+            value = baseInputs[feature] || 50;
+        }
+
+        simValue.min = min;
+        simValue.max = max;
+        simValue.step = step;
+        simValue.value = value;
+        simMin.textContent = min;
+        simMax.textContent = max;
+        simCurrent.textContent = value;
+
+        // Update the chart
+        updateChart(feature, value);
+      }
+
+      // Handle slider changes
+      simValue.addEventListener('input', () => {
+        simCurrent.textContent = simValue.value;
+        updateChart(simFeature.value, parseFloat(simValue.value));
+      });
+
+      // Handle feature selection changes
+      simFeature.addEventListener('change', updateSlider);
+
+      // Initialize the slider
+      updateSlider();
+    }
+
+    // Get unit for feature
+    function getUnit(feature) {
+      const units = {
+        'temp': '°C',
+        'rain': 'mm',
+        'fertilizer': 'kg/acre',
+        'nitrogen': 'kg/ha',
+        'phosphorus': 'kg/ha',
+        'potassium': 'kg/ha'
+      };
+      return units[feature] || '';
+    }
+
+    // Format feature name for display
+    function formatFeatureName(feature) {
+      const names = {
+        'temp': 'Temperature',
+        'rain': 'Rainfall',
+        'fertilizer': 'Fertilizer',
+        'nitrogen': 'Nitrogen',
+        'phosphorus': 'Phosphorus',
+        'potassium': 'Potassium'
+      };
+      return names[feature] || feature;
+    }
+
+    // Update the chart for what-if analysis with better visualization
+    async function updateChart(feature, currentValue) {
+      const container = document.getElementById('simChart');
+      container.innerHTML = `
+        <div class="chart-loading text-center py-5">
+          <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 mb-0 text-muted">Analyzing ${formatFeatureName(feature)} impact...</p>
+        </div>
+      `;
+
+      try {
+        // Get current input values
+        const payload = {
+          city: document.getElementById('city').value.trim() || 'Visakhapatnam',
+          temp: parseFloat(document.getElementById('temp').value) || 25,
+          rain: parseFloat(document.getElementById('rain').value) || 50,
+          fertilizer: parseInt(document.getElementById('fertilizer').value) || 50,
+          nitrogen: parseInt(document.getElementById('nitrogen').value) || 50,
+          phosphorus: parseInt(document.getElementById('phosphorus').value) || 30,
+          potassium: parseInt(document.getElementById('potassium').value) || 20,
+          sim_feature: feature,
+          current_value: parseFloat(currentValue)
+        };
+
+        // Show loading state
+        const response = await fetch('/api/simulate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}));
+          throw new Error(error.message || 'Failed to fetch simulation data');
+        }
+
+        const result = await response.json();
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        const { data, current_index, unit } = result;
+
+        if (!data || !data.length) {
+          throw new Error('No data available for simulation');
+        }
+
+        // Prepare chart data
+        const labels = data.map(item => `${item.x} ${unit}`);
+        const chartData = data.map(item => item.yield);
+        const stdDev = data.map(item => item.std || 0);
+        const currentYield = data[current_index]?.yield || 0;
+
+        // Create chart container with responsive wrapper
+        container.innerHTML = `
+          <div class="chart-container" style="position: relative; height: 350px;">
+            <canvas id="yieldChart"></canvas>
+          </div>
+          <div class="chart-legend text-center mt-2 small text-muted">
+            <i class="bi bi-circle-fill text-success me-1"></i> Predicted Yield 
+            <span class="mx-3">•</span>
+            <i class="bi bi-circle-fill text-warning me-1"></i> Current Value
+            <span class="mx-3">•</span>
+            <i class="bi bi-arrow-up-circle-fill text-danger me-1"></i> Higher Yield
+          </div>
+        `;
+
+        const ctx = document.getElementById('yieldChart').getContext('2d');
+
+        // Destroy previous chart if exists
+        if (window.yieldChartInstance) {
+          window.yieldChartInstance.destroy();
+          window.yieldChartInstance = null;
+        }
+
+        // Calculate min/max for y-axis with some padding
+        const minY = Math.max(0, Math.min(...chartData) * 0.9);
+        const maxY = Math.max(...chartData) * 1.1;
+
+        // Create gradient for chart area
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(46, 125, 50, 0.15)');
+        gradient.addColorStop(1, 'rgba(46, 125, 50, 0.01)');
+
+        // Create new chart with enhanced styling and interactivity
+        window.yieldChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Predicted Yield',
+                data: chartData,
+                borderColor: '#2e7d32',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: (context) =>
+                  context.dataIndex === current_index ? '#ff9800' : '#2e7d32',
+                pointBorderColor: '#fff',
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: '#ff9800',
+                pointHoverBorderColor: '#fff',
+                pointHitRadius: 12,
+                pointBorderWidth: 2,
+                pointRadius: (context) =>
+                  context.dataIndex === current_index ? 6 : 4,
+                segment: {
+                  borderColor: (ctx) =>
+                    ctx.p0.parsed.y > currentYield ? '#f44336' : '#4caf50',
+                  borderWidth: (ctx) =>
+                    ctx.p0.parsed.y > currentYield ? 2 : 0,
+                  borderDash: [5, 3]
+                }
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              intersect: false,
+              mode: 'index'
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                titleFont: {
+                  size: 14,
+                  weight: '600',
+                  family: "'Inter', system-ui, -apple-system, sans-serif"
+                },
+                bodyFont: {
+                  size: 15,
+                  weight: '500',
+                  family: "'Inter', system-ui, -apple-system, sans-serif"
+                },
+                padding: 12,
+                displayColors: false,
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                borderWidth: 1,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function (context) {
+                    const std = stdDev[context.dataIndex] || 0;
+                    const stdText = std > 0 ? `±${std.toFixed(1)}` : '';
+                    return [
+                      `Yield: ${context.parsed.y.toFixed(1)} Q/acre ${stdText}`,
+                      `Change: ${(context.parsed.y - currentYield).toFixed(1)} Q/acre`
+                    ];
+                  },
+                  title: function (context) {
+                    const featureName = formatFeatureName(feature);
+                    const currentVal = labels[context[0].dataIndex];
+                    return `${featureName}: ${currentVal}`;
+                  }
+                }
+              },
+              annotation: {
+                annotations: {
+                  line1: {
+                    type: 'line',
+                    yMin: currentYield,
+                    yMax: currentYield,
+                    borderColor: '#ff9800',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    borderDashOffset: 0,
+                    label: {
+                      content: 'Current Yield',
+                      enabled: true,
+                      position: 'right',
+                      backgroundColor: 'rgba(0,0,0,0.7)',
+                      font: {
+                        size: 11,
+                        weight: 'normal'
+                      },
+                      padding: 4,
+                      borderRadius: 4
+                    }
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                  drawBorder: false
+                },
+                title: {
+                  display: true,
+                  text: simFeature.options[simFeature.selectedIndex].text,
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--bs-body-color'),
+                  font: {
+                    weight: '600',
+                    size: 13
+                  },
+                  padding: { top: 10, bottom: 5 }
+                },
+                ticks: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--bs-secondary-color'),
+                  font: {
+                    size: 12
+                  }
+                }
+              },
+              y: {
+                beginAtZero: false,
+                min: Math.max(0, Math.min(...chartData) * 0.9),
+                title: {
+                  display: true,
+                  text: 'Yield (Q/acre)',
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--bs-body-color'),
+                  font: {
+                    weight: '600',
+                    size: 13
+                  },
+                  padding: { bottom: 10, top: 5 }
+                },
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)',
+                  drawBorder: false
+                },
+                ticks: {
+                  color: getComputedStyle(document.documentElement).getPropertyValue('--bs-secondary-color'),
+                  font: {
+                    size: 12
+                  },
+                  callback: function (value) {
+                    return value.toFixed(0);
+                  }
+                }
+              }
+            },
+            elements: {
+              line: {
+                borderJoinStyle: 'round'
+              }
+            }
+          }
+        });
+
+      } catch (error) {
+        console.error('Chart error:', error);
+        container.innerHTML = `
+          <div class="text-center py-4 text-danger">
+            <i class="bi bi-exclamation-triangle-fill fs-1 mb-2"></i>
+            <p class="mb-0">Failed to load chart data</p>
+            <small class="text-muted">${error.message}</small>
+          </div>
+        `;
+      }
+    }
+
+    // Helper function to get unit for each feature
+    function getUnit(feature) {
+      const units = {
+        'temp': '°C',
+        'rain': 'mm',
+        'fertilizer': 'kg/acre',
+        'nitrogen': ' kg/ha',
+        'phosphorus': ' kg/ha',
+        'potassium': ' kg/ha'
+      };
+      return units[feature] || '';
+    }
+
+    function findBestMatchingCrop(crop) {
+      if (!crop) return null;
+
+      crop = crop.toLowerCase().trim();
+
+      // Check for exact matches first
+      for (const [key, data] of Object.entries(cropTemperatureRanges)) {
+        const allNames = [key, ...(data.aliases || [])];
+        if (allNames.some(name => crop === name.toLowerCase())) {
+          return { key, data, matchType: 'exact' };
+        }
+      }
+
+      // Check for partial matches
+      for (const [key, data] of Object.entries(cropTemperatureRanges)) {
+        const allNames = [key, ...(data.aliases || [])];
+        for (const name of allNames) {
+          if (name.toLowerCase().includes(crop) || crop.includes(name.toLowerCase())) {
+            return { key, data, matchType: 'partial' };
+          }
+        }
+      }
+
+      // Check for similar sounding crops (basic implementation)
+      const similarCrops = [];
+      for (const [key, data] of Object.entries(cropTemperatureRanges)) {
+        const allNames = [key, ...(data.aliases || [])];
+        for (const name of allNames) {
+          if (name.length > 3 && (crop.includes(name.substring(0, 3)) || name.includes(crop.substring(0, 3)))) {
+            similarCrops.push({ key, data, matchType: 'similar' });
+            break;
+          }
+        }
+      }
+
+      return similarCrops[0] || null;
+    }
+
+    // Global crop temperature ranges with aliases
+    const cropTemperatureRanges = {
+      // Cereals
+      wheat: { min: 10, max: 25, optimal: 20, aliases: ['wheat', 'gehun', 'gandum'] },
+      rice: { min: 20, max: 35, optimal: 28, aliases: ['rice', 'chawal', 'arisi', 'paddy'] },
+      maize: { min: 15, max: 35, optimal: 25, aliases: ['maize', 'corn', 'makkai', 'makkajonna', 'sweet corn', 'bhutta'] },
+
+      // Pulses
+      soybean: { min: 15, max: 35, optimal: 25, aliases: ['soybean', 'bhatt', 'soya'] },
+      chickpea: { min: 10, max: 30, optimal: 22, aliases: ['chickpea', 'chana', 'chole', 'bengal gram'] },
+      lentil: { min: 10, max: 30, optimal: 24, aliases: ['lentil', 'masoor', 'dal'] },
+
+      // Vegetables
+      tomato: { min: 18, max: 30, optimal: 24, aliases: ['tomato', 'tamatar'] },
+      potato: { min: 15, max: 25, optimal: 20, aliases: ['potato', 'aloo', 'urulaikilangu'] },
+      onion: { min: 12, max: 30, optimal: 25, aliases: ['onion', 'pyaz', 'vengayam'] },
+      brinjal: { min: 20, max: 35, optimal: 28, aliases: ['brinjal', 'eggplant', 'baingan', 'kathirikai'] },
+
+      // Cash Crops
+      sugarcane: { min: 20, max: 35, optimal: 30, aliases: ['sugarcane', 'ganna', 'karumbu'] },
+      cotton: { min: 21, max: 40, optimal: 30, aliases: ['cotton', 'kapas', 'paruthi'] },
+
+      // Fruits
+      mango: { min: 24, max: 35, optimal: 30, aliases: ['mango', 'aam', 'mambazham'] },
+      banana: { min: 20, max: 35, optimal: 28, aliases: ['banana', 'kela', 'vazhaipazham'] },
+
+      // Spices
+      chilli: { min: 20, max: 35, optimal: 30, aliases: ['chilli', 'mirchi', 'milagai'] },
+      turmeric: { min: 20, max: 35, optimal: 28, aliases: ['turmeric', 'haldi', 'manjal'] },
+
+      // Oilseeds
+      mustard: { min: 10, max: 25, optimal: 20, aliases: ['mustard', 'sarson', 'kadugu'] },
+      groundnut: { min: 20, max: 35, optimal: 30, aliases: ['groundnut', 'peanut', 'mungphali', 'verkadalai'] },
+
+      // Others
+      coconut: { min: 25, max: 35, optimal: 30, aliases: ['coconut', 'nariyal', 'thengai'] },
+      tea: { min: 15, max: 30, optimal: 22, aliases: ['tea', 'chai'] },
+      coffee: { min: 15, max: 28, optimal: 23, aliases: ['coffee', 'kapi'] }
+    };
+
+    // Function to update temperature based on crop
+    function updateTemperatureForCrop(cropName) {
+      const tempRangeEl = document.querySelector('.crop-temp-range');
+
+      if (!cropName.trim()) {
+        tempRangeEl.textContent = '';
+        return false;
+      }
+
+      const match = findBestMatchingCrop(cropName);
+
+      if (match) {
+        const { key, data } = match;
+        const displayName = data.aliases?.[0] || key;
+
+        // Update the input field with the matched crop name
+        const input = document.getElementById('cropNameInput');
+        if (match.matchType === 'exact' || match.matchType === 'partial') {
+          input.value = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+        }
+
+        // Show temperature information
+        tempRangeEl.innerHTML = `
+          <span class="text-success">
+            <i class="bi bi-info-circle"></i> 
+            ${displayName}: ${data.optimal}°C (${data.min}-${data.max}°C range)
+          </span>
+        `;
+
+        // Set temperature to optimal value if it's outside the range
+        const tempInput = document.getElementById('temp');
+        const currentTemp = parseFloat(tempInput.value) || 0;
+        if (currentTemp < data.min || currentTemp > data.max) {
+          tempInput.value = data.optimal;
+        }
+        return true;
+      } else {
+        // For unknown crops, show a message
+        tempRangeEl.innerHTML = `
+          <span class="text-warning">
+            <i class="bi bi-exclamation-triangle"></i> 
+            No specific temperature data for "${cropName}". Using default settings.
+          </span>
+        `;
+        return false;
+      }
+    }
+
+    // Handle crop input changes with better UX
+    (function initCropInput() {
+      const cropInput = document.getElementById('cropNameInput');
+      const cropSuggestions = document.getElementById('cropSuggestions');
+
+      if (!cropInput || !cropSuggestions) {
+        console.error('Required elements not found');
+        return; // This return is now inside a function, so it's valid
+      }
+
+      let cropInputTimer;
+
+      // Show all suggestions when input is focused
+      cropInput.addEventListener('focus', function () {
+        const items = cropSuggestions.querySelectorAll('.dropdown-item');
+        items.forEach(item => item.style.display = 'block');
+        cropSuggestions.style.display = 'block';
+      });
+
+      // Hide suggestions when clicking outside
+      document.addEventListener('click', function (e) {
+        if (e.target !== cropInput) {
+          cropSuggestions.style.display = 'none';
+        }
+      });
+
+      // Handle input changes
+      cropInput.addEventListener('input', function () {
+        clearTimeout(cropInputTimer);
+        const inputValue = this.value.trim().toLowerCase();
+
+        // Filter and show matching suggestions
+        const items = cropSuggestions.querySelectorAll('.dropdown-item');
+        let hasMatches = false;
+
+        items.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          if (inputValue === '' || text.includes(inputValue)) {
+            item.style.display = 'block';
+            hasMatches = true;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        cropSuggestions.style.display = hasMatches ? 'block' : 'none';
+
+        // Update temperature info
+        cropInputTimer = setTimeout(() => {
+          if (!inputValue) {
+            document.querySelector('.crop-temp-range').textContent = '';
+            return;
+          }
+
+          // Show loading indicator
+          const tempRangeEl = document.querySelector('.crop-temp-range');
+          tempRangeEl.innerHTML = '<span class="text-muted"><i class="bi bi-hourglass-split"></i> Checking crop information...</span>';
+
+          // Process the input
+          setTimeout(() => {
+            updateTemperatureForCrop(inputValue);
+          }, 100); // Small delay for better UX
+
+        }, 300); // 300ms debounce
+      });
+
+      // Handle suggestion selection
+      cropSuggestions.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (e.target.classList.contains('dropdown-item')) {
+          cropInput.value = e.target.getAttribute('data-value');
+          cropSuggestions.style.display = 'none';
+          updateTemperatureForCrop(cropInput.value);
+        }
+      });
+    })(); // End of IIFE
+
+    // Event Listeners
+    document.getElementById('btnWeather')?.addEventListener('click', getWeather);
+    document.getElementById('btnPredict')?.addEventListener('click', predict);
+
+    // Handle Enter key in city input
+    const cityInput = document.getElementById('city');
+    if (cityInput) {
+      cityInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          getWeather();
+        }
+      });
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Show welcome message
+      setTimeout(() => {
+        showToast('Welcome to AgriGenius AI! Enter your field data to get started.', 'info');
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
