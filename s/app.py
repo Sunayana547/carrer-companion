@@ -37,7 +37,7 @@ def get_crop_info(crop_name):
         else:
             return jsonify({
                 'success': False,
-                'message': f"No temperature information available for {crop}"
+                'message': f"No temperature available for {crop}"
             }), 404
     except Exception as e:
         return jsonify({
